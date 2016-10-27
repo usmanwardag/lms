@@ -96,17 +96,16 @@ def routine():
 s = requests.session()
 
 # Load configurations
-with open("config.yml", 'r') as ymlfile:
-    cfg = yaml.load(ymlfile)
+import config as cfg
 
-directory = cfg['directory']['local']
-url = cfg['resources']['url']
+directory = cfg.directory
+url = cfg.resources['url']
 
-values = {'username': cfg['login']['user'],
-          'password': cfg['login']['password']}
+values = {'username': cfg.login['user'],
+          'password': cfg.login['password']}
 
-powerpoint = cfg['resources']['powerpoint']
-pdf = cfg['resources']['pdf']
-word = cfg['resources']['word']
+powerpoint = cfg.resources['powerpoint']
+pdf = cfg.resources['pdf']
+word = cfg.resources['word']
 
 routine()
