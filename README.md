@@ -7,7 +7,7 @@ Clone _lms_ repository:
     
     git clone https://github.com/usmanwardag/lms
     
-Go to config.py and change _user_, _password_ and _local_ parameters. Keep the other parameters unchanged.
+Go to config.py and change _user_, _password_ and _directory_ parameters. Keep other parameters unchanged.
     
     login = {
          'user' = 'your_usernamae_here'
