@@ -46,4 +46,4 @@ Coming soon.
 
 ## Bugs
 
-If you find any, please [report an issue](https://github.com/usmanwardag/lms/issues/new)
+If you find any, please [report an issue](https://github.com/usmanwardag/lms/issues/new).
