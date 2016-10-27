@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
 import os
-import yaml
 
 import warnings
 warnings.filterwarnings('ignore')
