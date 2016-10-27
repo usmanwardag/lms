@@ -43,3 +43,7 @@ Coming soon.
 ### On Windows
 
 Coming soon.
+
+## Bugs
+
+If you find any, please [report an issue](https://github.com/usmanwardag/lms/issues/new)
