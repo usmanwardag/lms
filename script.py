@@ -28,8 +28,8 @@ def routine():
             dir_ = directory + '/' + title
             if not os.path.exists(dir_):
                 os.makedirs(dir_)
-                os.makedirs(dir_+'/'+'Labs')
-                os.makedirs(dir_+'/'+'Assignments')
+                os.makedirs(dir_ + '/' + 'Labs')
+                os.makedirs(dir_ + '/' + 'Assignments')
 
         # Check for files that are already downloaded
         files = []
@@ -83,6 +83,8 @@ def routine():
                     
                     r_link = page_tree.findAll('object', {'type': 'application/pdf'})[0]['data']
                 
+                print r_title
+
                 # Download file now  
                 response = s.get(r_link, stream=True, verify=False)
                 
