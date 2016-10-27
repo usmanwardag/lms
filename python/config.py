@@ -1,6 +1,6 @@
 login = {
-  'user': '13beeukhan',
-  'password': 'Islamabad1_'
+  'user': 'user',
+  'password': 'password'
 }
 
 directory = '/Users/usmankhan/Desktop'
