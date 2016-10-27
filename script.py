@@ -1,22 +1,12 @@
 from bs4 import BeautifulSoup
 import requests
 import os
+import yaml
 
 import warnings
 warnings.filterwarnings('ignore')
 
 from tqdm import tqdm
-
-# Create a persistent global session
-s = requests.session()
-
-url = 'https://lms.nust.edu.pk/portal/login/index.php'
-values = {'username': '13beeukhan',
-          'password': 'Islamabad1_'}
-
-powerpoint = 'https://lms.nust.edu.pk/portal/theme/image.php/nust/core/1464680422/f/powerpoint-24'
-pdf = 'https://lms.nust.edu.pk/portal/theme/image.php/nust/core/1464680422/f/pdf-24'
-word = 'https://lms.nust.edu.pk/portal/theme/image.php/nust/core/1464680422/f/document-24'
 
 def log_in():
     return s.post(url, data=values, verify=False).content
@@ -33,16 +23,17 @@ def routine():
         links = [c.findChildren('a')[0]['href'] for c in courses]
         titles = [c.findChildren('a')[0]['title'] for c in courses]
         
-        # Create course folder if they do not already exist
-        for title in titles:
-            if not os.path.exists(title):
-                os.makedirs(title)
-                os.makedirs(title+'/'+'Labs')
-                os.makedirs(title+'/'+'Assignments')
+        # Create course folders if they do not already exist
+        for title in titles:      
+            dir_ = directory + '/' + title
+            if not os.path.exists(dir_):
+                os.makedirs(dir_)
+                os.makedirs(dir_+'/'+'Labs')
+                os.makedirs(dir_+'/'+'Assignments')
 
         # Check for files that are already downloaded
         files = []
-        for root, subdirs, f in os.walk(os.getcwd()):
+        for root, subdirs, f in os.walk(directory):
             files.append(f)
             
         all_files = []
@@ -69,11 +60,9 @@ def routine():
                 
                 # File link 
                 r_link = t.findChildren('a')[0]['href']
-                print r_link
                 
                 # File name
                 r_title = t.findAll('span', {'class': 'instancename'})[0].text + r_type
-                print r_title
                 
                 # Move on if file aready exists
                 if r_title in all_files: 
@@ -81,11 +70,11 @@ def routine():
                 
                 # Some pattern matching to classify files
                 if 'lab' in r_title.lower():
-                    r_title = title + '/Labs/' + r_title
+                    r_title = directory + '/' + title + '/Labs/' + r_title
                 elif 'assignment' in r_title.lower():
-                    r_title = title + '/Assignments/' + r_title
+                    r_title = directory + '/' + title + '/Assignments/' + r_title
                 else:
-                    r_title = title + '/' + r_title
+                    r_title = directory + '/' + title + '/' + r_title
                 
                 # If pdf, need to do some extra work to get file link
                 if r_type == '.pdf':
@@ -93,7 +82,6 @@ def routine():
                     page_tree = BeautifulSoup(page, 'html.parser')
                     
                     r_link = page_tree.findAll('object', {'type': 'application/pdf'})[0]['data']
-                    print 'Modified: ', r_link
                 
                 # Download file now  
                 response = s.get(r_link, stream=True, verify=False)
@@ -101,5 +89,22 @@ def routine():
                 with open(r_title, "wb") as handle:
                     for data in tqdm(response.iter_content()):
                         handle.write(data)
+
+# Create a persistent global session
+s = requests.session()
+
+# Load configurations
+with open("config.yml", 'r') as ymlfile:
+    cfg = yaml.load(ymlfile)
+
+directory = cfg['directory']['local']
+url = cfg['resources']['url']
+
+values = {'username': cfg['login']['user'],
+          'password': cfg['login']['password']}
+
+powerpoint = cfg['resources']['powerpoint']
+pdf = cfg['resources']['pdf']
+word = cfg['resources']['word']
 
 routine()
