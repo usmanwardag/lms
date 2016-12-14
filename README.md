@@ -7,6 +7,10 @@ Clone _lms_ repository:
     
     git clone https://github.com/usmanwardag/lms
     
+Install all dependencies first:
+
+    pip install -r requirements.txt
+    
 Go to config.py and change _user_, _password_ and _directory_ parameters. Keep other parameters unchanged.
     
     login = {
